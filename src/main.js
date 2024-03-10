@@ -1,9 +1,22 @@
-const { SYSTEM_PROMPT } = require('./const');
-const lang = require('./lang');
+/* eslint-disable import/extensions */
+/* eslint-disable no-var */
+var { SYSTEM_PROMPT } = require('./const.js');
+var lang = require('./lang.js');
 
-const { handleGeneralError, replacePromptKeywords } = require('./utils');
+// TODO: test
+// const $option = {};
+// const $http = {
+//   request: require('axios'),
+// };
+//
+
+var { handleGeneralError, replacePromptKeywords } = require('./utils.js');
 
 function supportLanguages() {
+  // eslint-disable-next-line no-undef
+  $log.info(lang.supportLanguages);
+  // eslint-disable-next-line no-undef
+  $log.info(lang.supportLanguages.map(([standardLang]) => standardLang));
   return lang.supportLanguages.map(([standardLang]) => standardLang);
 }
 
@@ -26,9 +39,9 @@ function generatePrompts(query) {
   }
 
   if (
-    detectFrom === 'wyw'
-    || detectFrom === 'zh-Hans'
-    || detectFrom === 'zh-Hant'
+    detectFrom === 'wyw' ||
+    detectFrom === 'zh-Hans' ||
+    detectFrom === 'zh-Hant'
   ) {
     if (detectTo === 'zh-Hant') {
       generatedUserPrompt = '翻译成繁体白话文';
@@ -39,7 +52,8 @@ function generatePrompts(query) {
     }
   }
   if (detectFrom === detectTo) {
-    generatedSystemPrompt = "You are a text embellisher, you can only embellish the text, don't interpret it.";
+    generatedSystemPrompt =
+      "You are a text embellisher, you can only embellish the text, don't interpret it.";
     if (detectTo === 'zh-Hant' || detectTo === 'zh-Hans') {
       generatedUserPrompt = '润色此句';
     } else {
@@ -63,7 +77,7 @@ function generatePrompts(query) {
  *  frequency_penalty: number;
  *  presence_penalty: number;
  *  messages?: {
- *    role: "system" | "user";
+ *    role: "assistant" | "user";
  *    content: string;
  *  }[];
  *  prompt?: string;
@@ -80,21 +94,22 @@ function buildRequestBody(model, query) {
   const systemPrompt = customSystemPrompt || generatedSystemPrompt;
   const userPrompt = customUserPrompt || generatedUserPrompt;
 
-  const standardBody = {
+  const options = {
     model,
     temperature: 0.2,
     max_tokens: 1000,
     top_p: 1,
     frequency_penalty: 1,
     presence_penalty: 1,
+    stream: false,
   };
 
   return {
-    ...standardBody,
+    options,
     model,
     messages: [
       {
-        role: 'system',
+        role: 'assistant',
         content: systemPrompt,
       },
       {
@@ -147,9 +162,9 @@ function handleStreamResponse(query, targetText, textFromResponse) {
  * @returns {void}
  */
 function handleGeneralResponse(query, result) {
-  const { choices } = result.data;
+  const data = result.data;
 
-  if (!choices || choices.length === 0) {
+  if (!data || !data.message || !data.message.content) {
     handleGeneralError(query, {
       type: 'api',
       message: '接口未返回结果',
@@ -158,7 +173,7 @@ function handleGeneralResponse(query, result) {
     return;
   }
 
-  let targetText = choices[0].message.content.trim();
+  let targetText = data.message.content.trim();
 
   // 使用正则表达式删除字符串开头和结尾的特殊字符
   targetText = targetText.replace(/^(『|「|"|“)|(』|」|"|”)$/g, '');
@@ -182,24 +197,46 @@ function translate(query) {
   const { apiUrl } = $option;
 
   const baseUrl = apiUrl || 'http://localhost:11434';
-  const apiUrlPath = 'api/chat';
+  const apiUrlPath = '/api/chat';
 
-  const modelValue = 'mistral';
+  const modelValue = 'llama2';
 
   const body = buildRequestBody(modelValue, query);
 
   (async () => {
-    // eslint-disable-next-line no-undef
-    const result = await $http.request({
-      method: 'POST',
-      url: baseUrl + apiUrlPath,
-      body,
-    });
+    try {
+      // eslint-disable-next-line no-undef
+      const result = await $http.request({
+        method: 'POST',
+        url: baseUrl + apiUrlPath,
+        header: {
+          'Content-Type': 'application/json',
+        },
+        // data: body, // TODO: body
+        body: body, // TODO: body
+      });
 
-    if (result.error) {
-      handleGeneralError(query, result);
-    } else {
-      handleGeneralResponse(query, result);
+      // eslint-disable-next-line no-undef
+      $log.info(
+        JSON.stringify({
+          method: 'POST',
+          url: baseUrl + apiUrlPath,
+          body,
+        }),
+      );
+      // eslint-disable-next-line no-undef
+      $log.info(JSON.stringify(result));
+
+      if (result.error) {
+        handleGeneralError(query, result);
+      } else {
+        handleGeneralResponse(query, result);
+      }
+    } catch (error) {
+      handleGeneralError(query, error);
+
+      // eslint-disable-next-line no-undef
+      $log.info(error);
     }
   })();
 }
