@@ -1,0 +1,13 @@
+{
+    "identifier": "hqwuzhaoyi.ollama.translate",
+    "version": "0.1.0",
+    "category": "translate",
+    "name": "Ollama Translator",
+    "summary": "",
+    "icon": "",
+    "author": "",
+    "homepage": "",
+    "appcast": "",
+    "minBobVersion": "0.5.0",
+    "options": []
+}
