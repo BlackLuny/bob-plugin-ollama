@@ -42,7 +42,7 @@ var HttpErrorCodes = {
 };
 
 var SYSTEM_PROMPT =
-  "You are a translation engine that can only translate text and cannot interpret it.";
+  "You are a translation engine that can only translate text and cannot interpret it, ensure the translation is accurate and retains the technical specifics of the input.";
 
 exports.SYSTEM_PROMPT = SYSTEM_PROMPT;
 exports.HttpErrorCodes = HttpErrorCodes;
