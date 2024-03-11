@@ -1,13 +1,77 @@
 {
-    "identifier": "hqwuzhaoyi.ollama.translate",
-    "version": "0.1.0",
-    "category": "translate",
-    "name": "Ollama Translator",
-    "summary": "",
-    "icon": "",
-    "author": "",
-    "homepage": "",
-    "appcast": "",
-    "minBobVersion": "0.5.0",
-    "options": []
+  "identifier": "hqwuzhaoyi.ollama.translate",
+  "version": "0.1.0",
+  "category": "translate",
+  "name": "Ollama Translator",
+  "summary": "Ollama Translator is a simple and easy-to-use translation tool.",
+  "icon": "",
+  "author": "hqwuzhaoyi <hqwuzhaoyi@gmail.com>",
+  "homepage": "https://github.com/hqwuzhaoyi/bob-plugin-ollama",
+  "appcast": "",
+  "minBobVersion": "0.5.0",
+  "options": [
+    {
+      "identifier": "apiUrl",
+      "type": "text",
+      "title": "API URL",
+      "defaultValue": "http://localhost:11434",
+      "desc": "可选项。API URL。",
+      "textConfig": {
+        "type": "visible",
+        "placeholderText": "http://localhost:11434"
+      }
+    },
+    {
+      "identifier": "model",
+      "type": "text",
+      "title": "模型",
+      "defaultValue": "llama2",
+      "textConfig": {
+        "type": "visible",
+        "placeholderText": "llama2"
+      }
+    },
+    {
+      "identifier": "customSystemPrompt",
+      "type": "text",
+      "title": "系统指令",
+      "defaultValue": "You are a translation engine that can only translate text and cannot interpret it, ensure the translation is accurate and retains the technical specifics of the input.",
+      "desc": "可选项。自定义 System Prompt，填写则会覆盖默认的 System Prompt。自定义 Prompt可使用以下变量：\n\n`$text` - 需要翻译的文本，即翻译窗口输入框内的文本 `$sourceLang` - 原文语言，即翻译窗口输入框内文本的语言，比如「简体中文」\n\n`$targetLang` - 目标语言，即需要翻译成的语言，可以在翻译窗口中手动选择或自动检测，比如「English」",
+      "textConfig": {
+        "type": "visible",
+        "height": "100",
+        "placeholderText": "You are a translation engine that can only translate text and cannot interpret it, ensure the translation is accurate and retains the technical specifics of the input.",
+        "keyWords": ["$text", "$sourceLang", "$targetLang"]
+      }
+    },
+    {
+      "identifier": "customUserPrompt",
+      "type": "text",
+      "title": "用户指令",
+      "defaultValue": "translate from $sourceLang to $targetLang:\n\n$text",
+      "desc": "可选项。自定义 User Prompt，填写则会覆盖默认的 User Prompt，默认值为`$text`（即翻译窗口输入框内的文本）。\n\n自定义 Prompt 中可以使用与系统指令中相同的变量",
+      "textConfig": {
+        "type": "visible",
+        "height": "100",
+        "placeholderText": "translate from $sourceLang to $targetLang:\n\n$text",
+        "keyWords": ["$text", "$sourceLang", "$targetLang"]
+      }
+    },
+    {
+      "identifier": "stream",
+      "type": "menu",
+      "title": "流式输出(待开发)",
+      "defaultValue": "1",
+      "menuValues": [
+        {
+          "title": "Enable",
+          "value": "1"
+        },
+        {
+          "title": "Disable",
+          "value": ""
+        }
+      ]
+    }
+  ]
 }
