@@ -1,1 +1,12 @@
-
+{
+  "identifier": "hqwuzhaoyi.ollama.translate",
+  "versions": [
+    {
+      "version": "0.1.0",
+      "desc": "初始版本",
+      "sha256": "bfc755b31bc5bb08a70d07a0df398eb4bccd613b",
+      "url": "https://github.com/hqwuzhaoyi/bob-plugin-ollama/releases/download/v0.1.1/bob-plugin-ollama-0.1.1.bobplugin",
+      "minBobVersion": "0.5.0"
+    }
+  ]
+}
