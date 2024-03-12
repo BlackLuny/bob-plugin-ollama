@@ -19,3 +19,5 @@ Ollama can run llama2 and other models. This plugin allows you to use Ollama as 
 ### Screenshots
 
 ![image](./images/preview.png)
+![settings](./images/settings.png)
+![settings2](./images/settings2.png)
