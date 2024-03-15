@@ -1,6 +1,17 @@
 # bob-plugin-ollama
 
-This is a plugin for [bob](https://bobtranslate.com) that adds support for the [Ollama](https://ollama.com) translation service.
+~~This is a plugin for [bob](https://bobtranslate.com) that adds support for the [Ollama](https://ollama.com) translation service.~~
+
+Simply use the default OpenAI service provided by Bob.
+
+```text
+http://localhost:11434/v1/chat/completions
+```
+
+![openai_setting](./images/openai_setting.png)
+![openai](./images/openai.png)
+
+[Ollama's compatibility with OpenAI](https://github.com/ollama/ollama/blob/main/docs/openai.md)
 
 ## Intro
 
