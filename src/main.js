@@ -107,10 +107,6 @@ function buildRequestBody(model, query) {
     stream: false,
     messages: [
       {
-        role: 'assistant',
-        content: systemPrompt,
-      },
-      {
         role: 'user',
         content: userPrompt,
       },
@@ -197,7 +193,7 @@ function translate(query) {
   const baseUrl = apiUrl || 'http://localhost:11434';
   const apiUrlPath = '/api/chat';
 
-  const modelValue = 'llama2';
+  const modelValue = $option.model ?? "llama3";
 
   const body = buildRequestBody(modelValue, query);
 

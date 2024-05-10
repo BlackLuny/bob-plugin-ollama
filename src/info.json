@@ -25,10 +25,10 @@
       "identifier": "model",
       "type": "text",
       "title": "模型",
-      "defaultValue": "llama2",
+      "defaultValue": "llama3",
       "textConfig": {
         "type": "visible",
-        "placeholderText": "llama2"
+        "placeholderText": "llama3"
       }
     },
     {
