@@ -155,7 +155,7 @@ function handleStreamResponse(query, targetText, textFromResponse) {
  * @param {Bob.HttpResponse} result
  * @returns {void}
  */
-function handleGeneralResponse(query, result) {
+function handleGeneralResponse(query, result,completion) {
   const data = result.data;
 
   if (!data || !data.message || !data.message.content) {
@@ -176,8 +176,8 @@ function handleGeneralResponse(query, result) {
   if (targetText.endsWith('" =>')) {
     targetText = targetText.slice(0, -4);
   }
-
-  query.onCompletion({
+  $log.info(targetText.split('\n'));
+  completion({
     result: {
       from: query.detectFrom,
       to: query.detectTo,
@@ -186,7 +186,7 @@ function handleGeneralResponse(query, result) {
   });
 }
 
-function translate(query) {
+function translate(query, completion) {
   // eslint-disable-next-line no-undef
   const { apiUrl } = $option;
 
@@ -222,9 +222,9 @@ function translate(query) {
       $log.info(JSON.stringify(result));
 
       if (result.error) {
-        handleGeneralError(query, result);
+        handleGeneralError(query, result, completion);
       } else {
-        handleGeneralResponse(query, result);
+        handleGeneralResponse(query, result, completion);
       }
     } catch (error) {
       handleGeneralError(query, error);

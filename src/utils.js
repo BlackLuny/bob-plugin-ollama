@@ -42,12 +42,12 @@ function getApiKey(apiKeys) {
  * @param {Bob.TranslateQuery} query
  * @param {Bob.ServiceError | Bob.HttpResponse} error
  */
-function handleGeneralError(query, error) {
+function handleGeneralError(query, error, completion) {
   if ("response" in error) {
     // 处理 HTTP 响应错误
     const { statusCode } = error.response;
     const reason = statusCode >= 400 && statusCode < 500 ? "param" : "api";
-    query.onCompletion({
+    completion({
       error: {
         type: reason,
         message: `接口响应错误 - ${HttpErrorCodes[statusCode]}`,
@@ -56,7 +56,7 @@ function handleGeneralError(query, error) {
     });
   } else {
     // 处理一般错误
-    query.onCompletion({
+    completion({
       error: {
         ...error,
         type: error.type || "unknown",
